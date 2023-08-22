@@ -27,7 +27,6 @@
                     <x-book-card
                         title="{{$book->title}}"
                         description="{{$book->description}}"
-                        cover="{{$book->cover}}"
                         author="{{$book->user->name}}"
                         url="{{route('book.show', compact('book'))}}"
                     />
