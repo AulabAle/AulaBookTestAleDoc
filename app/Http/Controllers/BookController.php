@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -11,12 +12,26 @@ class BookController extends Controller
     {
         $this->middleware('auth')->except('index' , 'show');
     }
+
+    public function downloadBook(Book $book)
+    {
+        if (file_exists(storage_path('app/' .$book->pdf))) {
+            return Storage::download($book->pdf);
+        } else {
+            abort(404); // File non trovato
+        }
+    }
+
+    public function viewPdf(Book $book) {
+        return view('book.viewPdf', compact('book'));
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $books = Book::paginate(6);//paginate bootstrap
+        return view('book.index', compact('books'));
     }
 
     /**
@@ -40,7 +55,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        //
+        return view('book.show', compact('book'));
     }
 
     /**

@@ -17,3 +17,7 @@ use App\Http\Controllers\PublicController;
 
 Route::get('/', [PublicController::class, 'homepage'])->name('homepage');
 Route::get('/create/book', [BookController::class, 'create'])->name('book.create');
+Route::get('/index/book', [BookController::class, 'index'])->name('book.index');
+Route::get('/show/book/{book}', [BookController::class, 'show'])->name('book.show');
+Route::get('/download/book/{book}', [BookController::class, 'downloadBook'])->name('book.download');
+Route::get('/view/book/{book}', [BookController::class, 'viewPdf'])->name('book.viewPdf');

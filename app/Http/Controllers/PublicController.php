@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 class PublicController extends Controller
 {
     public function homepage() {
-        $books = Book::all();
+        //ordine decrescente
+        $books = Book::orderBy('created_at','DESC')->get()->take(6);
         return view('welcome', compact('books'));
     }
 }

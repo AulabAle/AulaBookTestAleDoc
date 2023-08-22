@@ -17,23 +17,26 @@
     </header>
     <div class="container my-5">
         <div class="row justify-content-center">
-            @forelse($books as $book)
-                <div class="col-12 col-md-4 d-flex justify-content-center mt-3">
-                    <div class="card" style="width: 18rem;">
-                        <img src="https://picsum.photos/512/512" class="card-img-top" alt="Immsgine picsum">
-                        <div class="card-body">
-                            <h5 class="card-title">{{$book->title}}</h5>
-                            <p class="card-text">{{$book->description}}</p>
-                            <p class="card-text">Pubblicato da :{{$book->user->name}}</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
+            <div class="col-12 my-5">
+                <h2 class="display-3 text-center font-bold">
+                    Gli Ultimi libri
+                </h2>
+            </div>
+            @forelse ($books as $book)
+                <div class="col-12 col-md-6 col-lg-4 my-3">
+                    <x-book-card
+                        title="{{$book->title}}"
+                        description="{{$book->description}}"
+                        cover="{{$book->cover}}"
+                        author="{{$book->user->name}}"
+                        url="{{route('book.show', compact('book'))}}"
+                    />
                 </div>
-                @empty
-                    <h2 class="text-center">
-                        Non ci sono libri pubblicati
-                    </h2>
-                @endforelse
+            @empty
+                <h2 class="text-center">
+                    Non ci sono libri pubblicati
+                </h2>
+            @endforelse
         </div>
     </div>
 </x-layouts.layout>
