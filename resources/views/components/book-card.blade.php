@@ -1,4 +1,4 @@
-<div class="card text-white card-has-bg position-relative" style="background-image:url(https://picsum.photos/200/200);">
+<div class="card text-white card-has-bg position-relative" style="background-image:url({{$cover ? Storage::url($cover) : '/img/default.png'}});">
     <a class="text-white text-decoration-none" href="{{ $url }}">
         <div class="card-img-overlay d-flex flex-column">
             <div class="card-body">
