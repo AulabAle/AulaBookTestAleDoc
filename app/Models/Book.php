@@ -4,8 +4,11 @@ namespace App\Models;
 
 use OpenAI;
 use App\Models\User;
+use App\Models\PurchasedBook;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Book extends Model
@@ -18,7 +21,8 @@ class Book extends Model
         'description', 
         'pdf',
         'user_id',
-        'cover'
+        'cover',
+        'price'
     ];
 
     public function user()
@@ -56,5 +60,39 @@ class Book extends Model
             }
         return $image;
 
+    }
+
+    //Controllo se l'utente autenticato è il creatore del book
+    public function isBookAuthor(){
+        $user = Auth::user(); 
+        
+        if( !$user ){
+            return false;
+        } 
+
+        return $user->id == $this->user->id;
+    }
+
+    //Controllo se l'utente autenticato ha già acquistato il libro
+    public function isBookPurchased(){
+
+        $user = Auth::user(); 
+        
+        if( !$user ){
+            return false;
+        } 
+
+        $userHasPurchasedThisBook = $user
+            ->purchasedBooks()
+            ->where('book_id', $this->id)
+            ->where('payment_status', 'success')
+            ->exists();
+
+        return $userHasPurchasedThisBook;
+    }
+
+    public function purchasedBooks(): HasMany
+    {
+        return $this->hasMany(PurchasedBook::class);
     }
 }

@@ -24,8 +24,37 @@
                     <div class="card-body">
                         <h5 class="card-title">{{$book->title}}</h5>
                         <p class="card-text">{{$book->description}}</p>
-                        <a href="{{route('book.download', compact('book'))}}" class="btn btn-primary w-100 mb-2">Scarica</a>
-                        <a href="{{route('book.viewPdf', compact('book'))}}" class="btn btn-primary w-100 mb-2">Visualizza</a>
+
+                        @if(!($book->isBookPurchased() || $book->isBookAuthor()))
+                        <div class="mt-3">
+                            <form method="POST" action="{{route('checkout', compact('book'))}}">
+                            @csrf
+                            <button type="submit" class="btn btn-success">
+                            @if($book->price == 0)
+                                Aggingi alla tua libreria
+                            @else
+                                Acquista {{$book->price}} €
+                            @endif
+                            </button>
+                            </form>
+                        </div>
+                        @else
+                        <h6>Hai giá acquistato questo libro</h6>
+                        @endif
+
+                        @auth
+                        @if( $book->isBookPurchased() || $book->isBookAuthor())
+                        <a href="{{route('book.download', compact('book'))}}" class="btn btn-primary">
+                            Scarica
+                        </a>
+                        <a href="{{route('book.viewPdf', compact('book'))}}" class="btn btn-primary">
+                            Visualizza
+                        </a>
+                        @endif
+                        @endauth
+
+                        {{-- <a href="{{route('book.download', compact('book'))}}" class="btn btn-primary w-100 mb-2">Scarica</a>
+                        <a href="{{route('book.viewPdf', compact('book'))}}" class="btn btn-primary w-100 mb-2">Visualizza</a> --}}
                         <a href="{{route('book.index')}}" class="btn btn-primary w-100">Torna indietro</a>
                     </div>
                 </div>

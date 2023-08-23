@@ -5,11 +5,13 @@
             {{session('errorMessage')}}
         </div>
     @endif
+
     @if(session()->has('message'))
         <div class="d-flex justify-content-center my-2 alert alert-success">
             {{session('message')}}
         </div>
-    @endif   
+    @endif
+       
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <button class="nav-link {{ $step === 1 ? 'active' : '' }}" wire:click="changeStep(1)" >Upload</button>
@@ -30,12 +32,20 @@
                         @enderror
                         
                     </div>
-                    {{-- input password --}}
+                    {{-- input descrizione --}}
                     <div class="mb-3">
                         <label id="descriptionId" class="form-label">Descrizione del Libro*</label>
                         <textarea id="" cols="30" rows="10" class="form-control @error('description') is-invalid @enderror" wire:model.defer="description" for="descriptionId"></textarea>
                         @error('description')
                             <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    {{-- input price --}}
+                    <div class="mb-3">
+                        <label id="price" class="form-label">Inserisci il prezzo €</label>
+                        <input type="number" step="0.1" class="form-control @error('price') is-invalid @enderror" wire:model.defer="price" for="price">
+                        @error('price')
+                        <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                     {{-- input pdf --}}
