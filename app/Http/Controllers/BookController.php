@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -10,7 +11,7 @@ class BookController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('index' , 'show');
+        $this->middleware('auth')->except('index' , 'show', 'indexCategory');
     }
 
     public function downloadBook(Book $book)
@@ -33,6 +34,10 @@ class BookController extends Controller
         $books = Book::paginate(6);//paginate bootstrap
         return view('book.index', compact('books'));
     }
+
+    public function indexCategory(Category $category){
+        return view('book.indexCategory', compact('category'));
+      }
 
     /**
      * Show the form for creating a new resource.

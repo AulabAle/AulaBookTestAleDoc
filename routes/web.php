@@ -17,11 +17,13 @@ use App\Http\Controllers\PaymentController;
 */
 
 Route::get('/', [PublicController::class, 'home'])->name('welcome');
+
 Route::get('/create/book', [BookController::class, 'create'])->name('book.create');
 Route::get('/index/book', [BookController::class, 'index'])->name('book.index');
 Route::get('/show/book/{book}', [BookController::class, 'show'])->name('book.show');
 Route::get('/download/book/{book}', [BookController::class, 'downloadBook'])->name('book.download');
 Route::get('/view/book/{book}', [BookController::class, 'viewPdf'])->name('book.viewPdf');
+Route::get('/index/book/category/{category}', [BookController::class, 'indexCategory'])->name('book.category');
 
 
 Route::post('/checkout/{book}', [PaymentController::class, 'checkout'])->middleware('auth')->name('checkout');

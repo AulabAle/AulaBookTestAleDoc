@@ -4,6 +4,7 @@ namespace App\Models;
 
 use OpenAI;
 use App\Models\User;
+use App\Models\Category;
 use App\Models\PurchasedBook;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,8 @@ class Book extends Model
         'pdf',
         'user_id',
         'cover',
-        'price'
+        'price',
+        'category_id'
     ];
 
     public function user()
@@ -91,8 +93,20 @@ class Book extends Model
         return $userHasPurchasedThisBook;
     }
 
+    public function getDescriptionSubstring(){
+        if (strlen($this->description) > 20) {
+                return substr($this->description, 0 , 30) . '...';
+        }
+        return $this->description;
+    }
+
     public function purchasedBooks(): HasMany
     {
         return $this->hasMany(PurchasedBook::class);
+    }
+    
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

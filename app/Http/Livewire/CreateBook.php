@@ -12,7 +12,7 @@ class CreateBook extends Component
 {
     use WithFileUploads;
 
-    public $title, $description, $pdf, $promptToken, $cover, $book, $style, $character, $ambience, $otherDetails, $mainColor;
+    public $title, $description, $pdf, $promptToken, $cover, $book, $style, $subject, $ambience, $otherDetails, $mainColor, $selectedCategory;
     public $step = 1;
     public $price = 0;
 
@@ -23,6 +23,7 @@ class CreateBook extends Component
         'title' => 'required',
         'description' => 'required',
         'pdf' => 'required|file|mimes:pdf',
+        'selectedCategory' => 'required',
     ];
 
     protected $messages = [
@@ -50,6 +51,7 @@ class CreateBook extends Component
             'user_id' => Auth::user()->id,
             'cover'=>$this->cover ? $this->cover : '/img/default.png',
             'price' => $this->price,
+            'category_id' => $this->selectedCategory
             ]
         );
             
@@ -64,9 +66,15 @@ class CreateBook extends Component
         $this->validate([
             'ambience' => 'required|max:1000',
             'style'=>'required|max:1000',
+            'subject'=>'required',
         ]);
         $default=env('DEFAULT_PROMPT');
-        $this->promptToken = "$default , $this->style, $this->character , $this->ambience , $this->otherDetails , $this->mainColor"; 
+        $this->promptToken = " $default , 
+                                use style: $this->style, 
+                                the book subject is: $this->subject , 
+                                the book main ambience is: $this->ambience , 
+                                other details here: $this->otherDetails, 
+                                the book main color is: $this->mainColor";
         $this->cover = Book::generateImage($this->cover, $this->promptToken);
     }
 
@@ -76,26 +84,37 @@ class CreateBook extends Component
         $this->step = $newStep;
     }
 
-    //Funzione di controllo degli step next e validazione dei campi per ogni step
+    // Funzione di controllo degli step next e validazione dei campi per ogni step
     public function nextStep(){
         if ($this->step == 1) {
             $this->validate([
                 'title' => 'required',
                 'description' => 'required',
-                'pdf' => 'required|file|mimes:pdf',
-            ]);
-            $this->changeStep(2);
-        } elseif ($this->step == 2){
-            $this->changeStep(3);
-        }
+                'pdf' => 'required',
+                'selectedCategory' => 'required',
+            ], $this->messages);
+
+            $this->step++;
+            return;
+        } 
         
+        if ($this->step == 2){
+                $this->validate([
+                    'ambience' => 'required|max:1000',
+                    'style'=>'required|max:1000',
+                    'subject'=>'required',
+                ]);
+            $this->step++;
+            return;
+        }
     }
+
     //funzione di controllo degli step prew
     public function prevStep(){
         if ($this->step == 3) {
-            $this->changeStep(2);
+            $this->step--;
         } elseif ($this->step == 2){
-            $this->changeStep(1);
+            $this->step--;
         }
     }
 

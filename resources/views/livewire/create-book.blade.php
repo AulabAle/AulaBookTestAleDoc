@@ -40,6 +40,19 @@
                             <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+                    {{-- input categoria --}}
+                    <div class="mb-3">
+                        <label for="categoryId">Categoria</label>
+                        <select wire:model.defer='selectedCategory' id="categoryId" class="form-control @error('selectedCategory') is-invalid @enderror">
+                            <option value="">Scegli la categoria</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @endforeach
+                        </select>
+                        @error('selectedCategory')
+                            <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
                     {{-- input price --}}
                     <div class="mb-3">
                         <label id="price" class="form-label">Inserisci il prezzo €</label>
@@ -81,8 +94,8 @@
                     </div>
                     {{-- Input categoria default --}}
                         <div class="mb-3">
-                            <label for="idCharacter" class="form-label">Personaggio/i</label>
-                            <textarea class="form-control @error('character') is-invalid @enderror" id="idCharacter" aria-describedby="" wire:model.defer="character" cols="30" rows="5"></textarea>
+                            <label for="idSubject" class="form-label">Soggetto principale*</label>
+                            <textarea class="form-control @error('subject') is-invalid @enderror" id="idSubject" aria-describedby="" wire:model.defer="subject" cols="30" rows="5"></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="idAmbience" class="form-label">Ambientazione*</label>
@@ -118,6 +131,7 @@
                         <x-book-card
                             title="{{$title}}"
                             description="{{$description}}"
+                            category="{{$categories->find($selectedCategory)?->name}}"
                             cover="{{$cover}}"
                             author="{{ Auth::user()->name}}"
                             url="#"

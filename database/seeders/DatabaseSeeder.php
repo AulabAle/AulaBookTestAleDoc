@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,5 +20,15 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $categories = ['Fantasy','Fantascienza' ,'Narrativa', 'Horror', 'Avventura', 'Azione','Classici', 'Saggistica', 'Thriller', 'Poesia', 'Didattica', 'Altro'];
+
+        foreach ($categories as $category) {
+            DB::table('categories')->insert([
+                'name'=>$category,
+                'created_at'=>Carbon::now(),
+                'updated_at'=>Carbon::now()
+            ]);
+        }
     }
 }

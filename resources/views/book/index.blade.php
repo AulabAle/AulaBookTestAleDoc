@@ -11,13 +11,14 @@
 
     <div class="col-12 mt-5">
         <div class="container my-5">
-            <div class="row">
+            <div class="row justify-content-center">
                 @forelse ($books as $book)
                     <div class="col-12 col-md-6 col-lg-4 my-3">
                         <x-book-card
                             title="{{$book->title}}"
-                            description="{{$book->description}}"
+                            description="{{$book->getDescriptionSubstring()}}"
                             author="{{$book->user->name}}"
+                            category="{{$book->category->name}}"
                             cover="{{$book->cover}}"
                             url="{{route('book.show', compact('book'))}}"
                         />
