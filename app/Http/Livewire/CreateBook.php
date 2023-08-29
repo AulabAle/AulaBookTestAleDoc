@@ -15,6 +15,7 @@ class CreateBook extends Component
     public $title, $description, $pdf, $promptToken, $cover, $book, $style, $subject, $ambience, $otherDetails, $mainColor, $selectedCategory;
     public $step = 1;
     public $price = 0;
+    public $askReview=false;
 
     // Stili suggeriti pre compilati
     public $styles = ['Gothic','Disney','Storybook','3D render','Kodachrome','Steampuk','Realistic','Realismo','Futuristico','Pencil drawing'];
@@ -51,7 +52,9 @@ class CreateBook extends Component
             'user_id' => Auth::user()->id,
             'cover'=>$this->cover ? $this->cover : '/img/default.png',
             'price' => $this->price,
-            'category_id' => $this->selectedCategory
+            'category_id' => $this->selectedCategory,
+            'is_published'=>!$this->askReview,
+            'review_status' => $this->askReview ? 'pending' : 'completed',
             ]
         );
             

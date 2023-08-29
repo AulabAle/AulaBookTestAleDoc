@@ -86,4 +86,26 @@ class BookController extends Controller
     {
         //
     }
+
+    //funzione per la pubblicazione del libro
+    public function publish(Book $book)
+    {
+        if( !$book->isBookAuthor() ){
+            return redirect()->back()->with('message','Non sei l\'autore di questo libro, non puoi pubblicarlo!');
+        }
+
+        $book->setAccepted(true);
+        return redirect()->back()->with('message','Libro pubblicato con successo');
+    }
+
+    //funzione per nascondere il libro
+    public function unpublish(Book $book)
+    {
+        if( !$book->isBookAuthor() ){
+            return redirect()->back()->with('message','Non sei l\'autore di questo libro, non puoi rimuovere la pubblicazione!');
+        }
+        
+        $book->setAccepted(false);
+        return redirect()->back()->with('message','Libro rimosso corretamente');
+    }
 }

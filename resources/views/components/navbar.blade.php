@@ -32,6 +32,16 @@
             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
               @csrf
             </form>
+            {{-- Zona revisore --}}
+            @if (Auth::user()->isRevisor() || Auth::user()->isAdmin())
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ route('revisor.index') }}">Zona Revisore</a>
+                  </li>
+            @endif
+            {{-- Profilo utente --}}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('user.profile') }}">I tuoi Libri</a>
+            </li>
           </ul>
         </li>
         @endauth

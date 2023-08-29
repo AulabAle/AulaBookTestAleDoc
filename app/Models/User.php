@@ -8,6 +8,7 @@ use App\Models\PurchasedBook;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -46,7 +47,15 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function books()
+    public function isRevisor(){
+        return $this->role_id == 2;
+    }
+
+    public function isAdmin(){
+        return $this->role_id == 1;
+    }
+
+    public function books(): HasMany
     {
         return $this->hasMany(Book::class);
     }
@@ -54,5 +63,15 @@ class User extends Authenticatable
     public function purchasedBooks(): HasMany
     {
         return $this->hasMany(PurchasedBook::class);
+    }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 }

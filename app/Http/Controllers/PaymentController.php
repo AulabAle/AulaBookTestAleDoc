@@ -26,7 +26,7 @@ class PaymentController extends Controller
         if($book->price == 0){
             $purchasedBook->payment_status = 'success';
             $purchasedBook->save();
-            return redirect()->route('welcome')->with('success' , 'Aggiunto alla libreria con successo');
+            return redirect()->route('welcome')->with('message' , 'Aggiunto alla libreria con successo');
         }
 
         // altrimenti aspettiamo il pagamento con carta di credito

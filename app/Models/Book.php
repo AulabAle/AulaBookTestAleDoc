@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Book extends Model
@@ -24,7 +25,9 @@ class Book extends Model
         'user_id',
         'cover',
         'price',
-        'category_id'
+        'category_id',
+        'is_published' , 
+        'review_status',
     ];
 
     public function user()
@@ -100,13 +103,26 @@ class Book extends Model
         return $this->description;
     }
 
+    //Funzione per la pubblicazione del book
+    public function setAccepted($value)
+    {
+        $this->is_published=$value;
+        $this->save();
+        return true;
+    }
+
     public function purchasedBooks(): HasMany
     {
         return $this->hasMany(PurchasedBook::class);
     }
     
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 }

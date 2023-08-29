@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\RevisorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +27,22 @@ Route::get('/show/book/{book}', [BookController::class, 'show'])->name('book.sho
 Route::get('/download/book/{book}', [BookController::class, 'downloadBook'])->name('book.download');
 Route::get('/view/book/{book}', [BookController::class, 'viewPdf'])->name('book.viewPdf');
 Route::get('/index/book/category/{category}', [BookController::class, 'indexCategory'])->name('book.category');
+//Pubblica book
+Route::patch('/accetta-book/{book}', [BookController::class, 'publish'])->name('user.publish');
+//Nascondi book
+Route::patch('/rifiuta-book/{book}', [BookController::class, 'unpublish'])->name('user.unpublish');
 
 
 Route::post('/checkout/{book}', [PaymentController::class, 'checkout'])->middleware('auth')->name('checkout');
 Route::get('/checkout/success/{purchasedBook}', [PaymentController::class, 'success'])->name('payment.success');
 Route::get('/checkout/cancel/{purchasedBook}', [PaymentController::class, 'cancel'])->name('payment.cancel');
+
+
+Route::get('/diventa-revisore', [RevisorController::class, 'becomeRevisor'])->middleware('auth')->name('become.revisor');
+Route::get('/rendi-revisore/{user}', [RevisorController::class, 'makeRevisor'])->name('make.revisor');
+Route::get('/revisor/home' , [RevisorController::class, 'index'])->name('revisor.index');
+
+Route::post('/revisione-book/{book}', [ReviewController::class, 'store'])->name('response.review');
+
+Route::get('/user/profile' , [UserController::class , 'userProfile'])->name('user.profile');
+
