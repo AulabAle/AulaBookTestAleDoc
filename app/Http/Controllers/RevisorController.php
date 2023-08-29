@@ -25,7 +25,7 @@ class RevisorController extends Controller
     public function becomeRevisor()
     {
         if (!Auth::check()) {
-            return redirect(route('welcome'))->with('info', 'Non puoi accedere al servizio. Registrati o effettua il login!');
+            return redirect(route('welcome'))->with('message', 'Non puoi accedere al servizio. Registrati o effettua il login!');
         }
         if(Auth::user()->isAdmin() || Auth::user()->isRevisor()){
             return redirect()->back()->with('message', 'Sei giá un revisore!');

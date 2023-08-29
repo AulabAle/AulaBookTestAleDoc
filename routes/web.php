@@ -5,6 +5,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RevisorController;
 
@@ -48,4 +49,7 @@ Route::get('/user/profile' , [UserController::class , 'userProfile'])->name('use
 
 Route::delete('/delete/book/{book}', [BookController::class, 'destroy'])->name('book.destroy');
 Route::get('/edit/book/{book}', [BookController::class, 'edit'])->name('book.edit');
+
+
+Route::post('/books/{book}/comments', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
 

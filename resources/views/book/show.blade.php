@@ -63,6 +63,35 @@
             </div>
         </div>
     </div>
-
+    <div class="container my-3">
+        <div class="row justify-content-center">
+                <div class="col-12 col-lg-5">
+                    <div class="card-custom-glass card-show-height align-items-center padding-custom-20y-30x">
+                        <h2 class="text-center">Vuoi lasciare una recensione?</h2>
+                        <p class="text-center">Condividi il tuo pensiero con altri lettori!</p>
+                        <form method="POST" action="{{ route('comments.store', compact('book')) }}" class="w-100 mt-3">
+                            @csrf
+                            <label class="form-label fw-bold">Inserisci una recensione</label>
+                              <textarea 
+                                  id="inputComment" 
+                                  cols="30" 
+                                  rows="5" 
+                                  name="content"
+                                  placeholder="Inserisci una recensione..."
+                                  class="form-control"   
+                              ></textarea>
+                            <button type="submit" class="btn btn-primary my-3">Commenta</button>
+                        </form>
+                        @if ($book->comments->isNotEmpty())
+                            @foreach($book->comments as $comment)
+                                <livewire:edit-comment  :comment="$comment"/>
+                            @endforeach
+                        @else
+                            <p class="text-white-custom fw-bold fs-3">Non ci sono recensioni</p>
+                        @endif
+                    </div>
+                </div>
+        </div>
+    </div>
 
 </x-layouts.layout>
