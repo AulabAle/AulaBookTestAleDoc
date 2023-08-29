@@ -9,7 +9,7 @@ class PublicController extends Controller
 {
     public function home() {
         //ordine decrescente
-        $books = Book::orderBy('created_at','DESC')->get()->take(6);
+        $books = Book::where('is_published', true)->orderBy('created_at','DESC')->get()->take(6);
         return view('welcome', compact('books'));
     }
 }

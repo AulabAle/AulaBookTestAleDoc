@@ -17,6 +17,12 @@ class PurchasedBook extends Model
         'payment_status',
         'session_id'
     ];
+    public function getDescriptionSubstring(){
+        if (strlen($this->description) > 20) {
+                return substr($this->description, 0 , 30) . '...';
+        }
+        return $this->description;
+    }
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);

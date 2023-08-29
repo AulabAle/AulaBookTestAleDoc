@@ -30,10 +30,7 @@ class Book extends Model
         'review_status',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+
 
     public static function generateImage($image, $promptTokens)
     {
@@ -124,5 +121,10 @@ class Book extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class IsRevisor
@@ -13,9 +14,14 @@ class IsRevisor
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    $user = Auth::user();
-    if( $user && ($user->isRevisor() || $user->isAdmin())){
-        return $next($request);
+    public function handle(Request $request, Closure $next): Response
+    {
+        $user = Auth::user();
+
+        if( $user && ($user->isRevisor() || $user->isAdmin())){
+            return $next($request);
+        }
+
+        return redirect(route('welcome'))->with('message', 'Area riservata ai revisori');
     }
-    return redirect(route('welcome'))->with('message', 'Area riservata ai revisori');
 }

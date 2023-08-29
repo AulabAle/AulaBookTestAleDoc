@@ -31,7 +31,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::paginate(6);//paginate bootstrap
+        $books = Book::where('is_published', true)->paginate(6);//paginate bootstrap
         return view('book.index', compact('books'));
     }
 

@@ -4,8 +4,10 @@ namespace App\Http\Livewire;
 
 use App\Models\Book;
 use Livewire\Component;
+use App\Mail\ReviewRequest;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class CreateBook extends Component
@@ -44,7 +46,7 @@ class CreateBook extends Component
         $this->validate();
         
         // Creazione book
-        Book::create(
+        $book = Book::create(
         [
             'title' => $this->title,
             'description' => $this->description,
@@ -57,6 +59,12 @@ class CreateBook extends Component
             'review_status' => $this->askReview ? 'pending' : 'completed',
             ]
         );
+
+        //invio mail al revisore con job
+        if($this->askReview){
+            Mail::to('revisor@aulabook.com')->queue(new ReviewRequest($book));
+            return redirect()->route('welcome')->with('success','Libro inviato per la recesione correttamente');
+        } 
             
         session()->flash('message','eBook inserito correttamente');
         
