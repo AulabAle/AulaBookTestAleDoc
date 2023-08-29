@@ -68,7 +68,7 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        //
+        return view('book.edit' , compact('book'));
     }
 
     /**
@@ -84,7 +84,9 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        $book->delete();
+
+        return redirect()->route('user.profile')->with('success','Libro cancellato con successo!');
     }
 
     //funzione per la pubblicazione del libro

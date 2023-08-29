@@ -14,7 +14,7 @@ class CreateBook extends Component
 {
     use WithFileUploads;
 
-    public $title, $description, $pdf, $promptToken, $cover, $book, $style, $subject, $ambience, $otherDetails, $mainColor, $selectedCategory;
+    public $title, $description, $pdf, $promptToken, $cover, $book, $style, $subject, $ambience, $otherDetails, $mainColor, $selectedCategory, $editMode, $oldTitle, $oldPdf;
     public $step = 1;
     public $price = 0;
     public $askReview=false;
@@ -25,7 +25,7 @@ class CreateBook extends Component
     protected $rules = [
         'title' => 'required',
         'description' => 'required',
-        'pdf' => 'required|file|mimes:pdf',
+        'pdf' => 'required_if:oldPdf,!=,null',
         'selectedCategory' => 'required',
     ];
 
@@ -40,37 +40,75 @@ class CreateBook extends Component
         $this->validateOnly($propertyName);
     }
 
+    //Recupero nella mount degli id delle categorie
+  public function mount($book = null){
+
+        $this->step = 1;
+
+        if($book) {
+            $this->editMode = true;
+
+            $this->book = $book;
+            $this->title = $book->title;
+            $this->oldTitle = $book->title; 
+            $this->description = $book->description; 
+            $this->cover = $book->cover;
+            $this->selectedCategory = $book->category->id;        
+            $this->price = $book->price;
+            $this->oldPdf = $book->pdf;       
+        }
+    }
+
     public function saveBook()
     {
         // Validate
         $this->validate();
         
-        // Creazione book
-        $book = Book::create(
-        [
-            'title' => $this->title,
-            'description' => $this->description,
-            'pdf' =>$this->pdf->store('public/files'),
-            'user_id' => Auth::user()->id,
-            'cover'=>$this->cover ? $this->cover : '/img/default.png',
-            'price' => $this->price,
-            'category_id' => $this->selectedCategory,
-            'is_published'=>!$this->askReview,
-            'review_status' => $this->askReview ? 'pending' : 'completed',
-            ]
-        );
+        if($this->editMode){
+            // Aggiornamento book
+           $this->book->update([
+                'title' => $this->title,
+                'description' => $this->description,
+                'pdf' => $this->pdf ? $this->pdf->store('public/files') : $this->book->pdf,
+                'cover'=> $this->cover ? $this->cover : $this->book->cover,
+                'is_published'=> !$this->askReview,
+                'price' => $this->price,
+                'category_id'=> $this->selectedCategory,
+                'review_status' => $this->askReview ? 'pending' : 'completed',
+                ]
+            );
+
+            $message = "Libro modificato correttamente";
+
+        }else{
+            // Creazione book
+            $this->book = Book::create(
+            [
+                'title' => $this->title,
+                'description' => $this->description,
+                'pdf' =>$this->pdf->store('public/files'),
+                'user_id' => Auth::user()->id,
+                'cover'=>$this->cover ? $this->cover : '/img/default.png',
+                'price' => $this->price,
+                'category_id' => $this->selectedCategory,
+                'is_published'=>!$this->askReview,
+                'review_status' => $this->askReview ? 'pending' : 'completed',
+                ]
+            );
+
+            $message = "Libro inviato per la recesione correttamente";
+        }
 
         //invio mail al revisore con job
         if($this->askReview){
-            Mail::to('revisor@aulabook.com')->queue(new ReviewRequest($book));
+            Mail::to('revisor@aulabook.com')->queue(new ReviewRequest($this->book));
             return redirect()->route('welcome')->with('success','Libro inviato per la recesione correttamente');
         } 
             
-        session()->flash('message','eBook inserito correttamente');
+        session()->flash('message',$message);
         
         // Reset dei campi del form
         $this->reset();
-            
     }
 
     public function generate(){
@@ -95,13 +133,13 @@ class CreateBook extends Component
         $this->step = $newStep;
     }
 
-    // Funzione di controllo degli step next e validazione dei campi per ogni step
+    // Funzioone di controllo degli step next e validazione dei campi per ogni step
     public function nextStep(){
         if ($this->step == 1) {
             $this->validate([
                 'title' => 'required',
                 'description' => 'required',
-                'pdf' => 'required',
+                'pdf' => 'required_if:oldPdf,!=,null',
                 'selectedCategory' => 'required',
             ], $this->messages);
 
@@ -110,13 +148,17 @@ class CreateBook extends Component
         } 
         
         if ($this->step == 2){
+            if(!$this->cover  && !$this->editMode){
+                session()->flash('error', "Devi prima generare la copertina del libro");
                 $this->validate([
-                    'ambience' => 'required|max:1000',
                     'style'=>'required|max:1000',
                     'subject'=>'required',
+                    'topic'=>'required|max:1000',
                 ]);
+                return;
+            }
+
             $this->step++;
-            return;
         }
     }
 

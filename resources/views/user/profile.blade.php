@@ -40,7 +40,13 @@
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-between">
-                                            <a href="{{route('book.viewPdf', compact('book'))}}" class="btn btn-primary"><i class="bi bi-eye"></i></a>
+                                            <a href="{{route('book.show', compact('book'))}}" class="btn btn-primary"><i class="bi bi-eye"></i></a>
+                                            <a href="{{route('book.edit', compact('book'))}}" class="btn btn-warning"><i class="bi bi-pencil"></i></a>
+                                            <a onclick="event.preventDefault(); document.querySelector('#form_delete_{{$book->id}}').submit();" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                            <form method="POST" id="form_delete_{{$book->id}}" action="{{route('book.destroy', compact('book'))}}">
+                                                @method('delete')
+                                                @csrf
+                                            </form>
                                         </div>
                                     </td>
                                     <td>
@@ -132,6 +138,20 @@
                                                         <i class="bi bi-eye px-2"></i> Dettaglio
                                                     </a>
                                                 </li>   
+                                                <li>
+                                                    <a class="dropdown-item text-decoration-none text-white-custom" href="{{route('book.edit', compact('book'))}}">
+                                                        <i class="bi bi-pencil px-2"></i> Modifica
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <form method="POST" id="form_delete_{{$book->id}}" action="{{route('book.destroy', compact('book'))}}">
+                                                        @method('delete')
+                                                        @csrf
+                                                        <button  class="dropdown-item text-danger text-decoration-none">
+                                                            <i class="bi bi-trash px-2"></i> Elimina
+                                                        </button>
+                                                    </form>
+                                                </li> 
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li>
                                                     @if ($book->is_published)

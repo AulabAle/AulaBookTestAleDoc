@@ -46,3 +46,6 @@ Route::post('/revisione-book/{book}', [ReviewController::class, 'store'])->name(
 
 Route::get('/user/profile' , [UserController::class , 'userProfile'])->name('user.profile');
 
+Route::delete('/delete/book/{book}', [BookController::class, 'destroy'])->name('book.destroy');
+Route::get('/edit/book/{book}', [BookController::class, 'edit'])->name('book.edit');
+

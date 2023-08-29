@@ -11,12 +11,16 @@
             {{session('message')}}
         </div>
     @endif
+
+    <h1 class="text-center mb-5 ">
+        {{ $editMode ? "Modifica il libro : $oldTitle" : "Pubblica il tuo libro" }}
+    </h1>
        
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <button class="nav-link {{ $step === 1 ? 'active' : '' }}" wire:click="changeStep(1)" >Upload</button>
             <button class="nav-link {{ $step === 2 ? 'active' : '' }}" wire:click="changeStep(2)" {{ $title ? '' : 'disabled' }}>Cover</button>
-            <button class="nav-link {{ $step === 3 ? 'active' : '' }}" wire:click="changeStep(3)" {{ $promptToken ? '' : 'disabled' }}>Salvataggio</button>
+            <button class="nav-link {{ $step === 3 ? 'active' : '' }}" wire:click="changeStep(3)" {{ $cover ? '' : 'disabled' }}>Salvataggio</button>
         </div>
     </nav>
         <div class="tab-content my-3" id="nav-tabContent">
@@ -42,7 +46,7 @@
                     </div>
                     {{-- input categoria --}}
                     <div class="mb-3">
-                        <label for="categoryId">Categoria</label>
+                        <label for="categoryId">{{$editMode ? 'Modifica la categoria' : 'Categoria *'}}</label>
                         <select wire:model.defer='selectedCategory' id="categoryId" class="form-control @error('selectedCategory') is-invalid @enderror">
                             <option value="">Scegli la categoria</option>
                                     @foreach ($categories as $category)
@@ -55,7 +59,7 @@
                     </div>
                     {{-- input price --}}
                     <div class="mb-3">
-                        <label id="price" class="form-label">Inserisci il prezzo €</label>
+                        <label id="price" class="form-label">{{$editMode ? 'Modifica il prezzo €' : 'Inserisci il prezzo € *'}}</label>
                         <input type="number" step="0.1" class="form-control @error('price') is-invalid @enderror" wire:model.defer="price" for="price">
                         @error('price')
                         <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
@@ -63,12 +67,18 @@
                     </div>
                     {{-- input pdf --}}
                         <div class="mb-3">
-                            <label id="pdfId" class="form-label">Carica il tuo PDF*</label>
+                            <label id="pdfId" class="form-label">{{$editMode ? 'Aggiorna il tuo PDF' : 'Carica il tuo PDF *'}}</label>
                             <input type="file" class="form-control @error('pdf') is-invalid @enderror" wire:model.defer="pdf"  accept=".pdf" for="pdfId">
                             @error('pdf')
                             <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <input type="hidden" wire:model.defer="oldPdf">
+                        @if($editMode)
+                            <a class="text-center" href="{{route('book.download', compact('book'))}}" >Scarica la versione precedente</a>
+                        @endif
+
                     </form>
                 </div>
         </div>
@@ -126,6 +136,16 @@
             </div>
             {{-- Salvataggio --}}
             <div class="{{ $step !== 3 ? 'd-none' : '' }}">
+                {{-- Visualizzazione di errori in fase finale  --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="row justify-content-center mb-3">
                     <div class="col-12 col-md-6">
                         <x-book-card
@@ -142,7 +162,7 @@
                 <div class="col-12 mt-5 d-flex justify-content-center">
                     <div class="form-check form-switch">
                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" wire:model.defer="askReview">
-                            <label class="form-check-label" for="flexSwitchCheckDefault">Richiedi recensione</label>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">{{$editMode ? 'Richiedi nuovamente recensione' : 'Richiedi recensione'}}</label>
                             <a href=""data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="ms-2 bi bi-info-circle text-dark"></i></a>
                     </div>
                 </div>
@@ -155,7 +175,7 @@
                         <button  type="button" wire:click="nextStep" class=" btn btn-success {{ $step == 3 ? 'd-none' : '' }}" {{$step == 2 && !$cover ? 'disabled' : ''}}>Avanti</button>
                         <div class="{{ $step == 3 ? '' : 'd-none' }}">
                             <form wire:submit.prevent="saveBook">
-                                <button type="submit" class="btn btn-success {{ $step == 3 ? '' : 'd-none' }}">Inserisci eBook</button>
+                                <button type="submit" class="btn btn-success {{ $step == 3 ? '' : 'd-none' }}">{{ $editMode ? 'Salva le modifiche' : 'Inserisci eBook'}}</button>
                             </form>
                         </div>
                     </div>
