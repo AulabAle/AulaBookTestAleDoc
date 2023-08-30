@@ -7,3 +7,11 @@ loaderBtn.forEach(b =>{
         loader.classList.add('d-flex');
     })
 })
+
+const btnArrow = document.querySelector("#btnArrow");
+
+if (btnArrow) {
+    btnArrow.addEventListener("click", function() {
+        document.querySelector("#arrow").classList.toggle('arrow')
+    });
+}

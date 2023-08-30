@@ -11,7 +11,8 @@
     
     <div class="container my-5">
         <div class="row row justify-content-center">
-            @forelse ($category->books as $book)
+            {{-- @forelse ($category->books as $book) --}}
+            @forelse ($books as $book)
                 <div class="col-12 col-md-6 col-lg-4 my-3">
                     <x-book-card
                         title="{{$book->title}}"

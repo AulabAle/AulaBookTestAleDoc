@@ -32,6 +32,8 @@ Route::get('/index/book/category/{category}', [BookController::class, 'indexCate
 Route::patch('/accetta-book/{book}', [BookController::class, 'publish'])->name('user.publish');
 //Nascondi book
 Route::patch('/rifiuta-book/{book}', [BookController::class, 'unpublish'])->name('user.unpublish');
+//Filtri
+Route::get('/filter/book', [BookController::class, 'indexFilters'])->name('book.indexFilters');
 
 
 Route::post('/checkout/{book}', [PaymentController::class, 'checkout'])->middleware('auth')->name('checkout');

@@ -92,3 +92,11 @@
     width: 100px;
     height: 100px;
 }
+
+#arrow::before{
+    transition: 0.5s;
+}
+
+.arrow::before{
+    transform: rotate(180deg);
+}

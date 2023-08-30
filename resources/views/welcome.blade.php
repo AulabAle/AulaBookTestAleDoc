@@ -24,10 +24,11 @@
     </header>
     <div class="container my-5">
         <div class="row justify-content-center">
-            <div class="col-12 my-5">
+            <div class="col-12 my-5 d-flex flex-column align-items-center">
                 <h2 class="display-3 text-center font-bold">
                     Gli Ultimi libri
                 </h2>
+                <a href="{{ route('book.indexFilters') }}" class="btn btn-primary ms-3">Sfoglia tutti i libri</a>
             </div>
             @forelse ($books as $book)
                 <div class="col-12 col-md-6 col-lg-4 my-3">

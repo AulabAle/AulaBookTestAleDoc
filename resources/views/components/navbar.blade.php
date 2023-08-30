@@ -10,7 +10,8 @@
             <a class="nav-link active" aria-current="page" href="{{route('welcome')}}">Home</a>
           </li>
           <li class="nav-item">
-             <a class="nav-link" href="{{route('book.index')}}">Tutti i libri</a>
+             {{-- <a class="nav-link" href="{{route('book.index')}}">Tutti i libri</a> --}}
+             <a class="nav-link" href="{{ route('book.indexFilters') }}">Sfoglia tutti i libri</a>
           </li>
           @guest
         <li class="nav-item">
@@ -45,6 +46,23 @@
           </ul>
         </li>
         @endauth
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Categorie
+          </a>
+          <ul class="dropdown-menu">
+              @foreach ($categories as $category)
+                <li class="nav-item">
+                  <li class="nav-item">
+                    <form action="{{route("book.indexFilters")}}" method="GET">
+                      <input type="hidden" name="categoryChecked[0]" value="{{$category->id}}">
+                      <button type="submit" class="nav-link" >{{($category->name)}}</button>
+                    </form>
+                  </li>
+                </li>
+              @endforeach
+          </ul>
+        </li>
       </ul>
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

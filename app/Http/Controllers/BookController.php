@@ -11,7 +11,7 @@ class BookController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('index' , 'show', 'indexCategory');
+        $this->middleware('auth')->except('index' , 'show', 'indexCategory', 'indexFilters');
     }
 
     public function downloadBook(Book $book)
@@ -35,8 +35,14 @@ class BookController extends Controller
         return view('book.index', compact('books'));
     }
 
+    public function indexFilters(){
+        return view('book.indexFilter');
+    }
+
     public function indexCategory(Category $category){
-        return view('book.indexCategory', compact('category'));
+        $books = Book::where('is_published', true)->where('category_id', $category->id)->get();
+        // return view('book.indexCategory', compact('category'));
+        return view('book.indexCategory', compact('category','books'));
       }
 
     /**
