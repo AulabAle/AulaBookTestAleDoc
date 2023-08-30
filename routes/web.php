@@ -32,6 +32,8 @@ Route::get('/index/book/category/{category}', [BookController::class, 'indexCate
 Route::patch('/accetta-book/{book}', [BookController::class, 'publish'])->name('user.publish');
 //Nascondi book
 Route::patch('/rifiuta-book/{book}', [BookController::class, 'unpublish'])->name('user.unpublish');
+//Ricerca
+Route::get("/search/book", [BookController::class, "searchBooks"])->name("books.search");
 
 
 Route::post('/checkout/{book}', [PaymentController::class, 'checkout'])->middleware('auth')->name('checkout');
@@ -52,4 +54,6 @@ Route::get('/edit/book/{book}', [BookController::class, 'edit'])->name('book.edi
 
 
 Route::post('/books/{book}/comments', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
+
+
 

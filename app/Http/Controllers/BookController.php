@@ -110,4 +110,10 @@ class BookController extends Controller
         $book->setAccepted(false);
         return redirect()->back()->with('message','Libro rimosso corretamente');
     }
+
+    //funzione collegata alla ricerca full text iniziale
+    public function searchBooks(Request $request){
+        $books = Book::search($request->searched)->where('is_published' , true)->paginate(10);
+        return view('book.index' , compact('books'));
+    }
 }
