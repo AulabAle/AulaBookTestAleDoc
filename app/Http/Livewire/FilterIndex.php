@@ -79,7 +79,6 @@ class FilterIndex extends Component
                 break;
         }
 
-
         return view('livewire.filter-index', ['searched'=> $searched]);
     }
 }
