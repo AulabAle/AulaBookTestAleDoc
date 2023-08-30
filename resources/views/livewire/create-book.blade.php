@@ -154,6 +154,7 @@
                             category="{{$categories->find($selectedCategory)?->name}}"
                             cover="{{$cover}}"
                             author="{{ Auth::user()->name}}"
+                            price="{{$book->price}}"
                             url="#"
                         />
                     </div>

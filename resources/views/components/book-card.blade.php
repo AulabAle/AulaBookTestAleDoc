@@ -10,6 +10,13 @@
                 <div class="media">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="my-0 text-white">{{ $author }}</h6>
+                        <div class="mt-2">
+                            @if($price == 0)
+                                <p class="fs-3 fw-bold">Free</p>
+                            @else
+                                <p class="fs-3 fw-bold">€ {{$price}}</p>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

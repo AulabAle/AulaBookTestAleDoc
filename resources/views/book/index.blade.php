@@ -20,6 +20,7 @@
                             author="{{$book->user->name}}"
                             category="{{$book->category->name}}"
                             cover="{{$book->cover}}"
+                            price="{{$book->price}}"
                             url="{{route('book.show', compact('book'))}}"
                         />
                     </div>
