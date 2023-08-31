@@ -21,6 +21,8 @@ use App\Http\Controllers\RevisorController;
 */
 
 Route::get('/', [PublicController::class, 'home'])->name('welcome');
+//Rotte gestione lingua
+Route::get("/language/{lang}",[PublicController::class,"setLanguage"])->name("setLocale");
 
 Route::get('/create/book', [BookController::class, 'create'])->name('book.create');
 Route::get('/index/book', [BookController::class, 'index'])->name('book.index');
@@ -56,6 +58,7 @@ Route::get('/edit/book/{book}', [BookController::class, 'edit'])->name('book.edi
 
 
 Route::post('/books/{book}/comments', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
+
 
 
 

@@ -5,13 +5,13 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{{route('welcome')}}">Home</a>
           </li>
           <li class="nav-item">
              {{-- <a class="nav-link" href="{{route('book.index')}}">Tutti i libri</a> --}}
-             <a class="nav-link" href="{{ route('book.indexFilters') }}">Sfoglia tutti i libri</a>
+             <a class="nav-link" href="{{ route('book.indexFilters') }}">{{__('ui.allBooks')}}</a>
           </li>
           @guest
         <li class="nav-item">
@@ -64,10 +64,24 @@
           </ul>
         </li>
       </ul>
-      <form class="d-flex" method="GET" action="{{route('books.search')}}">
-        <input name="searched" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-globe-americas"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end lang-menu m-0 p-0">
+            <li class="nav-item ms-0 dropdown-item px-0">
+              <x-locale lang='en' nation='us'/>
+            </li>
+            <li class="nav-item ms-0 dropdown-item px-0">
+              <x-locale lang='it' nation='it'/>
+            </li>
+            <li class="nav-item ms-0 dropdown-item px-0">
+              <x-locale lang='es' nation='es'/>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>

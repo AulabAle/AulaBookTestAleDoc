@@ -11,9 +11,7 @@
                 <div class="col-12 col-lg-6 col-xl-5 order-2 order-lg-1 text-center text-lg-start">
                     <h1 class="display-2 font-bold">AulaBook</h1>
                     <p class="my-5">
-                        Con la nostra piattaforma intuitiva e i nostri servizi 
-                        professionali, puoi liberare la tua voce, preservando pienamente 
-                        il tuo stile unico e la tua visione artistica.
+                        {{__('ui.homeDescription')}}
                     </p>
                     <a href="{{route('book.create')}}" class="btn btn-primary">Pubblica un Libro</a>
                 </div>
@@ -28,7 +26,7 @@
                 <h2 class="display-3 text-center font-bold">
                     Gli Ultimi libri
                 </h2>
-                <a href="{{ route('book.indexFilters') }}" class="btn btn-primary ms-3">Sfoglia tutti i libri</a>
+                <a href="{{ route('book.indexFilters') }}" class="btn btn-primary ms-3">{{__('ui.allBooks')}}</a>
             </div>
             @forelse ($books as $book)
                 <div class="col-12 col-md-6 col-lg-4 my-3">
