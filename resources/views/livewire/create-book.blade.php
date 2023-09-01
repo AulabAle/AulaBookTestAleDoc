@@ -26,11 +26,11 @@
         <div class="tab-content my-3" id="nav-tabContent">
             {{-- Form inserimento dati libro --}}
             <div class="{{ $step !== 1 ? 'd-none' : '' }}">
-                <form wire:submit.prevent="saveBook">         
+                <form wire:submit="saveBook">         
                     {{-- input titolo --}}
                     <div class="mb-3">
                         <label id="titleId" class="form-label">Titolo*</label>
-                        <input type="text" class="form-control @error('title') is-invalid @enderror" wire:model.defer="title" for="titleId">
+                        <input type="text" class="form-control @error('title') is-invalid @enderror" wire:model="title" for="titleId">
                         @error('title')
                             <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
                         @enderror
@@ -39,7 +39,7 @@
                     {{-- input descrizione --}}
                     <div class="mb-3">
                         <label id="descriptionId" class="form-label">Descrizione del Libro*</label>
-                        <textarea id="" cols="30" rows="10" class="form-control @error('description') is-invalid @enderror" wire:model.defer="description" for="descriptionId"></textarea>
+                        <textarea id="" cols="30" rows="10" class="form-control @error('description') is-invalid @enderror" wire:model="description" for="descriptionId"></textarea>
                         @error('description')
                             <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
                         @enderror
@@ -47,7 +47,7 @@
                     {{-- input categoria --}}
                     <div class="mb-3">
                         <label for="categoryId">{{$editMode ? 'Modifica la categoria' : 'Categoria *'}}</label>
-                        <select wire:model.defer='selectedCategory' id="categoryId" class="form-control @error('selectedCategory') is-invalid @enderror">
+                        <select wire:model='selectedCategory' id="categoryId" class="form-control @error('selectedCategory') is-invalid @enderror">
                             <option value="">Scegli la categoria</option>
                                     @foreach ($categories as $category)
                                         <option value="{{$category->id}}">{{$category->name}}</option>
@@ -60,7 +60,7 @@
                     {{-- input price --}}
                     <div class="mb-3">
                         <label id="price" class="form-label">{{$editMode ? 'Modifica il prezzo €' : 'Inserisci il prezzo € *'}}</label>
-                        <input type="number" step="0.1" class="form-control @error('price') is-invalid @enderror" wire:model.defer="price" for="price">
+                        <input type="number" step="0.1" class="form-control @error('price') is-invalid @enderror" wire:model="price" for="price">
                         @error('price')
                         <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
                         @enderror
@@ -68,13 +68,13 @@
                     {{-- input pdf --}}
                         <div class="mb-3">
                             <label id="pdfId" class="form-label">{{$editMode ? 'Aggiorna il tuo PDF' : 'Carica il tuo PDF *'}}</label>
-                            <input type="file" class="form-control @error('pdf') is-invalid @enderror" wire:model.defer="pdf"  accept=".pdf" for="pdfId">
+                            <input type="file" class="form-control @error('pdf') is-invalid @enderror" wire:model="pdf"  accept=".pdf" for="pdfId">
                             @error('pdf')
                             <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        <input type="hidden" wire:model.defer="oldPdf">
+                        <input type="hidden" wire:model="oldPdf">
                         @if($editMode)
                             <a class="text-center" href="{{route('book.download', compact('book'))}}" >Scarica la versione precedente</a>
                         @endif
@@ -92,10 +92,10 @@
                         </div>
                     </div>
                 </div>
-                <form wire:submit.prevent="generate">
+                <form wire:submit="generate">
                     <div class="mb-3">
                         <label for="idStyle" class="form-label">Stile*</label>
-                        <select wire:model.defer="style" class="form-control @error('style') is-invalid @enderror">
+                        <select wire:model="style" class="form-control @error('style') is-invalid @enderror">
                             <option value="">Scegli uno stile:</option>
                             @foreach ($styles as $style)
                                 <option value="{{$style}}">{{$style}}</option>
@@ -105,19 +105,19 @@
                     {{-- Input categoria default --}}
                         <div class="mb-3">
                             <label for="idSubject" class="form-label">Soggetto principale*</label>
-                            <textarea class="form-control @error('subject') is-invalid @enderror" id="idSubject" aria-describedby="" wire:model.defer="subject" cols="30" rows="5"></textarea>
+                            <textarea class="form-control @error('subject') is-invalid @enderror" id="idSubject" aria-describedby="" wire:model="subject" cols="30" rows="5"></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="idAmbience" class="form-label">Ambientazione*</label>
-                            <textarea class="form-control @error('ambience') is-invalid @enderror" id="idAmbience" aria-describedby="" wire:model.defer="ambience" cols="30" rows="5"></textarea>
+                            <textarea class="form-control @error('ambience') is-invalid @enderror" id="idAmbience" aria-describedby="" wire:model="ambience" cols="30" rows="5"></textarea>
                         </div>
                     <div class="mb-3">
                         <label for="idOtherDetails" class="form-label">Altri dettagli</label>
-                        <textarea class="form-control @error('otherDetails') is-invalid @enderror" id="idOtherDetails" aria-describedby="" wire:model.defer="otherDetails" cols="30" rows="5"></textarea>
+                        <textarea class="form-control @error('otherDetails') is-invalid @enderror" id="idOtherDetails" aria-describedby="" wire:model="otherDetails" cols="30" rows="5"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="idMainColor" class="form-label">Colore principale</label>
-                        <input type="text" class="form-control @error('idMainColor') is-invalid @enderror" id="idMainColor" aria-describedby="" wire:model.defer="mainColor">
+                        <input type="text" class="form-control @error('idMainColor') is-invalid @enderror" id="idMainColor" aria-describedby="" wire:model="mainColor">
                     </div>
                     {{-- <div class="d-flex justify-content-center">
                         @if($cover)
@@ -171,7 +171,7 @@
                 {{-- Switch di richiesta --}}
                 <div class="col-12 mt-5 d-flex justify-content-center">
                     <div class="form-check form-switch">
-                           <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" wire:model.defer="askReview">
+                           <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" wire:model="askReview">
                             <label class="form-check-label" for="flexSwitchCheckDefault">{{$editMode ? 'Richiedi nuovamente recensione' : 'Richiedi recensione'}}</label>
                             <a href=""data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="ms-2 bi bi-info-circle text-dark"></i></a>
                     </div>
@@ -184,7 +184,7 @@
                         <button  type="button" class="btn btn-success {{ $step == 1 ? 'd-none' : '' }}" wire:click="prevStep">Indietro</button>
                         <button  type="button" wire:click="nextStep" class=" btn btn-success {{ $step == 3 ? 'd-none' : '' }}" {{$step == 2 && !$cover ? 'disabled' : ''}}>Avanti</button>
                         <div class="{{ $step == 3 ? '' : 'd-none' }}">
-                            <form wire:submit.prevent="saveBook">
+                            <form wire:submit="saveBook">
                                 <button type="submit" class="btn btn-success {{ $step == 3 ? '' : 'd-none' }}">{{ $editMode ? 'Salva le modifiche' : 'Inserisci eBook'}}</button>
                             </form>
                         </div>

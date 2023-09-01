@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Models\Book;
 use Livewire\Component;
@@ -31,12 +31,14 @@ class CreateBook extends Component
         'description' => 'required',
         'pdf' => 'required_if:oldPdf,!=,null',
         'selectedCategory' => 'required',
+        'price' => 'required|min:0|numeric',
     ];
 
     protected $messages = [
         'required' => 'Il campo :attribute é richiesto',
         'file' => 'Il campo :attribute deve essere un file',
         'mimes' => 'Il campo :attribute deve essere di tipo pdf',
+        'min' => 'Il campo :attribute deve essere minimo :min',
     ];
 
     public function updated($propertyName)

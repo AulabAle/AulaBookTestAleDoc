@@ -13,10 +13,10 @@
             <div class="text-white-custom mt-2">
                     <p class="{{$is_edit ? 'd-none' : '' }}">{{ $comment->content }}</p>
 
-                    <form wire:submit.prevent="update" class="{{$is_edit ? '' : 'd-none' }} d-flex align-items-center w-100">
+                    <form wire:submit="update" class="{{$is_edit ? '' : 'd-none' }} d-flex align-items-center w-100">
                         @csrf
                         @method('PUT')
-                        <textarea wire:model.defer="content" class="form-control me-2" ></textarea>
+                        <textarea wire:model="content" class="form-control me-2" ></textarea>
                         <button type="submit" class="btn btn-primary">Modifica</button>
                     </form>
             </div>

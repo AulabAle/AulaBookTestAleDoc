@@ -19,7 +19,7 @@
                         id="inputSearch" 
                         type="text" 
                         name="search" 
-                        wire:model="search"
+                        wire:model.live="search"
                         placeholder="Ricerca per titolo o per autore..."    
                         class="form-control @error($search) is-invalid @enderror" 
                         
@@ -37,7 +37,7 @@
                     <div class="d-flex flex-wrap">
                         @foreach ($categories as $category)
                             <label class="px-3 py-2">
-                                <input type="checkbox" wire:model="categoryChecked" value="{{$category->id}}">
+                                <input type="checkbox" wire:model.live="categoryChecked" value="{{$category->id}}">
                                 <p class="ms-2 d-inline-block mb-0">{{$category->name}}</p>
                             </label>
                             @error('categoryChecked')
@@ -57,7 +57,7 @@
                                 id="inputPrice" 
                                 type="number" 
                                 name="minPrice" 
-                                wire:model="minPrice"
+                                wire:model.live="minPrice"
                                 placeholder="Da..."    
                                 class="form-control @error($minPrice) is-invalid @enderror" 
                                 
@@ -74,7 +74,7 @@
                                 id="inputPrice" 
                                 type="number" 
                                 name="maxPrice" 
-                                wire:model="maxPrice"
+                                wire:model.live="maxPrice"
                                 placeholder="A..."    
                                 class="form-control @error($maxPrice) is-invalid @enderror" 
                                 
@@ -97,7 +97,7 @@
                         id="inputCategory" 
                         type="number" 
                         name="orderValue" 
-                        wire:model="orderValue"
+                        wire:model.live="orderValue"
                         placeholder="Ordina per..."    
                         class="form-control @error($orderValue) is-invalid @enderror" 
                         
@@ -167,7 +167,7 @@
                         id="inputSearch" 
                         type="text" 
                         name="search" 
-                        wire:model="search"
+                        wire:model.live="search"
                         placeholder="Ricerca per titolo o per autore..."    
                         class="form-control @error($search) is-invalid @enderror" 
                         
@@ -185,7 +185,7 @@
                     <div class="d-flex flex-wrap">
                         @foreach ($categories as $category)
                                 <label class="px-3 py-2">
-                                    <input type="checkbox" wire:model="categoryChecked" value="{{$category->id}}">
+                                    <input type="checkbox" wire:model.live="categoryChecked" value="{{$category->id}}">
                                     <p class="ms-2 d-inline-block mb-0">{{$category->name}}</p>
                                 </label>
                             @error('categoryChecked')
@@ -205,7 +205,7 @@
                                 id="inputPrice" 
                                 type="number" 
                                 name="minPrice" 
-                                wire:model="minPrice"
+                                wire:model.live="minPrice"
                                 placeholder="Da..."    
                                 class="form-control @error($minPrice) is-invalid @enderror" 
                                 
@@ -222,7 +222,7 @@
                                 id="inputPrice" 
                                 type="number" 
                                 name="maxPrice" 
-                                wire:model="maxPrice"
+                                wire:model.live="maxPrice"
                                 placeholder="A..."    
                                 class="form-control @error($maxPrice) is-invalid @enderror" 
                                 
@@ -245,7 +245,7 @@
                         id="inputCategory" 
                         type="number" 
                         name="orderValue" 
-                        wire:model="orderValue"
+                        wire:model.live="orderValue"
                         placeholder="Ordina per..."    
                         class="form-control @error($orderValue) is-invalid @enderror" 
                         
