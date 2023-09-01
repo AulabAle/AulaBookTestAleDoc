@@ -75,7 +75,7 @@
     background: linear-gradient(0deg, rgba(35, 79, 109, 0.3785889356) 0%, #6ea8fe 100%);
 }
 
-#loader-overlay{
+/* #loader-overlay{
     position: fixed;
     top: 0;
     left: 0;
@@ -88,7 +88,28 @@
     animation: spin 10s linear infinite;
 }
 
+
 #loader-overlay .spinner-border{
+    width: 100px;
+    height: 100px;
+} */
+
+#loader-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;;
+    right: 0;
+    bottom:0;
+    z-index: 9999; 
+    background-color: rgba(12, 12, 12, 0.588);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner-border{
+    position: sticky;
+    top: 50vh;
     width: 100px;
     height: 100px;
 }

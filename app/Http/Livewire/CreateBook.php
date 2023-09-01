@@ -6,9 +6,11 @@ use App\Models\Book;
 use Livewire\Component;
 use App\Mail\ReviewRequest;
 use Livewire\WithFileUploads;
+use App\Models\GeneratedImage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use App\Jobs\GenerateOpenAiCoverImageJob;
 
 class CreateBook extends Component
 {
@@ -18,6 +20,8 @@ class CreateBook extends Component
     public $step = 1;
     public $price = 0;
     public $askReview=false;
+    public $generatedImage;
+    public $isGeneratingImage = false;
 
     // Stili suggeriti pre compilati
     public $styles = ['Gothic','Disney','Storybook','3D render','Kodachrome','Steampuk','Realistic','Realismo','Futuristico','Pencil drawing'];
@@ -124,7 +128,35 @@ class CreateBook extends Component
                                 the book main ambience is: $this->ambience , 
                                 other details here: $this->otherDetails, 
                                 the book main color is: $this->mainColor";
-        $this->cover = Book::generateImage($this->cover, $this->promptToken);
+        //$this->cover = Book::generateImage($this->cover, $this->promptToken);
+        //$this->promptToken = $this->generatePromptTokenForCategory($this->selectedCategory);
+
+        if($this->generatedImage){
+            Storage::disk('public')->delete($this->generatedImage->image);
+            $this->generatedImage->delete();
+            $this->generatedImage = null;
+        }
+
+        // Creazione del modello GeneratedImage
+        $this->generatedImage = GeneratedImage::create([
+            'prompt'=>$this->promptToken,
+        ]);
+
+        dispatch(new GenerateOpenAiCoverImageJob($this->generatedImage));
+        $this->isGeneratingImage = true;
+    }
+
+    public function checkGeneratedImage(){
+        if($this->generatedImage->error){
+            $this->isGeneratingImage = false;
+            session()->flash('errorMessage', $this->generatedImage->error);
+            $this->generatedImage = null;
+            return;
+        }
+        if($this->generatedImage->image){
+            $this->cover = $this->generatedImage->image;
+            $this->isGeneratingImage = false;
+        }
     }
 
     //funzione per il cambio degli step

@@ -119,19 +119,28 @@
                         <label for="idMainColor" class="form-label">Colore principale</label>
                         <input type="text" class="form-control @error('idMainColor') is-invalid @enderror" id="idMainColor" aria-describedby="" wire:model.defer="mainColor">
                     </div>
-                    <div class="d-flex justify-content-center">
+                    {{-- <div class="d-flex justify-content-center">
                         @if($cover)
                             <img src="{{ Storage::url($cover) }}" alt="cover">
                         @endif
                     </div>
-                    <x-loader />
-                            <div class="container">
-                                <div class="row justify-content-center">
-                                    <div class="col-12 col-lg-10 pt-2 d-flex justify-content-center">
-                                        <button type="submit" class="btn btn-danger btn-loader mt-2">{{ $cover ? 'Rigenera' : 'Genera' }}</button>
-                                    </div>
-                                </div>
+                    <x-loader /> --}}
+                    <div>
+                        @if($isGeneratingImage)
+                            <x-loader />
+                            <span wire:poll.visible="checkGeneratedImage"></span>
+                        @endif
+                        @if($cover)
+                            <img src="{{ Storage::url($cover) }}" alt="cover" class="img-fluid img-glass-card d-block mx-auto">
+                        @endif
+                    </div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-10 pt-2 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-danger btn-loader mt-2">{{ $cover ? 'Rigenera' : 'Genera' }}</button>
                             </div>
+                        </div>
+                    </div>
                 </form>
             </div>
             {{-- Salvataggio --}}
@@ -154,7 +163,7 @@
                             category="{{$categories->find($selectedCategory)?->name}}"
                             cover="{{$cover}}"
                             author="{{ Auth::user()->name}}"
-                            price="{{$book->price}}"
+                            price="{{$price}}"
                             url="#"
                         />
                     </div>

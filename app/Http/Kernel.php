@@ -55,6 +55,7 @@ class Kernel extends HttpKernel
      */
     protected $middlewareAliases = [
         'isRevisor' => \App\Http\Middleware\IsRevisor::class,
+        'checkIfUserCanDownload'=> \App\Http\Middleware\CheckIfUserCanDownload::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
