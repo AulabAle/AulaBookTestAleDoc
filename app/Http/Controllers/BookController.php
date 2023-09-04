@@ -19,7 +19,7 @@ class BookController extends Controller
         if (file_exists(storage_path('app/' .$book->pdf))) {
             return Storage::download($book->pdf);
         } else {
-            abort(404); // File non trovato
+            return redirect()->route('welcome')->with('errorMessage','Il file PDF del libro ricercato, non è piú presente nel filesystem!');
         }
     }
 
@@ -54,14 +54,6 @@ class BookController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(Book $book)
@@ -75,14 +67,6 @@ class BookController extends Controller
     public function edit(Book $book)
     {
         return view('book.edit' , compact('book'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Book $book)
-    {
-        //
     }
 
     /**

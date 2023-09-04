@@ -1,5 +1,11 @@
 <x-layouts.layout>
 
+    @if(session()->has('errorMessage'))
+        <div class="d-flex justify-content-center my-2 alert alert-danger">
+            {{session('errorMessage')}}
+        </div>
+    @endif
+
     @if (session('message'))
         <div class="alert alert-success">
             {{ session('message') }}

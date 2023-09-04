@@ -23,6 +23,8 @@ class CreateBook extends Component
     public $generatedImage;
     public $isGeneratingImage = false;
 
+    protected $queryString = ['step'];
+
     // Stili suggeriti pre compilati
     public $styles = ['Gothic','Disney','Storybook','3D render','Kodachrome','Steampuk','Realistic','Realismo','Futuristico','Pencil drawing'];
 
@@ -31,11 +33,13 @@ class CreateBook extends Component
         'description' => 'required',
         'pdf' => 'required_if:oldPdf,!=,null',
         'selectedCategory' => 'required',
+        'cover' => 'required',
         'price' => 'required|min:0|numeric',
     ];
 
     protected $messages = [
         'required' => 'Il campo :attribute é richiesto',
+        'required_if' => 'Il campo :attribute é richiesto',
         'file' => 'Il campo :attribute deve essere un file',
         'mimes' => 'Il campo :attribute deve essere di tipo pdf',
         'min' => 'Il campo :attribute deve essere minimo :min',
@@ -123,6 +127,7 @@ class CreateBook extends Component
             'style'=>'required|max:1000',
             'subject'=>'required',
         ]);
+        
         $default=env('DEFAULT_PROMPT');
         $this->promptToken = " $default , 
                                 use style: $this->style, 
@@ -175,6 +180,7 @@ class CreateBook extends Component
                 'description' => 'required',
                 'pdf' => 'required_if:oldPdf,!=,null',
                 'selectedCategory' => 'required',
+                'price' => 'required|min:0|numeric',
             ], $this->messages);
 
             $this->step++;

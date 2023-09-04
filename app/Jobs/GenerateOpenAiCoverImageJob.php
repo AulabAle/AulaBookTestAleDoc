@@ -43,7 +43,7 @@ class GenerateOpenAiCoverImageJob implements ShouldQueue
         ]);
 
         // Decodifica l'immagine in base64 in una stringa binaria
-        $b64_img = base64_decode(strval($response->data[0]['b64_json']));
+        $b64_img = base64_decode($response->data[0]['b64_json']);
 
 
         // Crea un nuovo file PNG con la stringa binaria 
