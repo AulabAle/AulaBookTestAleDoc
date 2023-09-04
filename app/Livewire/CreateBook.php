@@ -128,7 +128,7 @@ class CreateBook extends Component
             'subject'=>'required',
         ]);
         
-        $default=env('DEFAULT_PROMPT');
+        $default=config('app.imagegen_default_prompt');
         $this->promptToken = " $default , 
                                 use style: $this->style, 
                                 the book subject is: $this->subject , 

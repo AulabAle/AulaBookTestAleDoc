@@ -31,7 +31,7 @@ class PaymentController extends Controller
 
         // altrimenti aspettiamo il pagamento con carta di credito
         // chiamata chiave stripe
-        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        Stripe::setApiKey(config('app.stripe_key'));
 
         //creazione della sessione di pagamento
         $session = Session::create([
@@ -73,7 +73,7 @@ class PaymentController extends Controller
             ]);
 
             $title = $purchasedBook->book->title;
-            $message = "Pagamento effettuato con successo! Hai acquistato \" $title \", correttamente.";
+            $message = "Pagamento effettuato con successo! Hai acquistato \" $title \", lo troverai disponibile nella tua sezione personale.";
         }
 
         return redirect()->route('welcome')->with('message' , $message);

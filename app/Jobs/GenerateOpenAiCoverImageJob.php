@@ -34,11 +34,11 @@ class GenerateOpenAiCoverImageJob implements ShouldQueue
     public function handle(): void
     {
         $prompt = $this->generatedImage->prompt;
-        $client = OpenAI::client(env('OPEN_AI_KEY'));
+        $client = OpenAI::client(config('app.open_ai_key'));
         $response = $client->images()->create([
             'prompt'=> "$prompt",
             'n'=>1,
-            'size'=>env('OPEN_AI_SIZE'),
+            'size'=>config('app.open_ai_size'),
             'response_format'=>'b64_json',
         ]);
 

@@ -186,4 +186,13 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'imagegen_default_prompt' => env(
+        'DEFAULT_PROMPT', 
+        'Generate an unwritten image representing a book, here are further details:'
+    ),
+
+    'open_ai_key' => env('OPEN_AI_KEY'),
+    'open_ai_size' => env('OPEN_AI_SIZE' , '512x512'),
+    'stripe_key' => env('STRIPE_SECRET_KEY'),
+
 ];

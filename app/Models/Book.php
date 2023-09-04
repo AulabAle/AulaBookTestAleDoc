@@ -49,12 +49,12 @@ class Book extends Model
     public static function generateImage($image, $promptTokens)
     {
             //OpenAI
-            $client = OpenAI::client(env('OPEN_AI_KEY'));
+            $client = OpenAI::client(config('app.open_ai_key'));
             try {
                 $response = $client->images()->create([
                     'prompt'=>$promptTokens,
                     'n'=>1,
-                    'size'=>env('OPEN_AI_SIZE'),
+                    'size'=>config('app.open_ai_size'),
                     'response_format'=>'b64_json',
                 ]);
 
