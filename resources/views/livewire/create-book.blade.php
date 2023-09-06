@@ -85,6 +85,7 @@
         
             {{-- Form generazione immagine --}}  
             <div class="{{ $step !== 2 ? 'd-none' : '' }}">
+                
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-12 col-lg-10 pt-2">
@@ -92,7 +93,10 @@
                         </div>
                     </div>
                 </div>
-                <form wire:submit="generate">
+
+
+                <form wire:submit="generate" class="d-flex flex-column gap-4">
+
                     <div class="mb-3">
                         <label for="idStyle" class="form-label">Stile*</label>
                         <select wire:model="style" class="form-control @error('style') is-invalid @enderror">
@@ -101,33 +105,41 @@
                                 <option value="{{$style}}">{{$style}}</option>
                             @endforeach
                         </select>
+                        @error('style')
+                            <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
-                    {{-- Input categoria default --}}
-                        <div class="mb-3">
-                            <label for="idSubject" class="form-label">Soggetto principale*</label>
-                            <textarea class="form-control @error('subject') is-invalid @enderror" id="idSubject" aria-describedby="" wire:model="subject" cols="30" rows="5"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="idAmbience" class="form-label">Ambientazione*</label>
-                            <textarea class="form-control @error('ambience') is-invalid @enderror" id="idAmbience" aria-describedby="" wire:model="ambience" cols="30" rows="5"></textarea>
-                        </div>
+
+                    <div class="mb-3">
+                        <label for="idSubject" class="form-label">{{ $isDidactics_nonFiction ? "Materia *" : "Soggetto/i *" }}</label>
+                        <textarea class="form-control @error('subject') is-invalid @enderror" id="idSubject" aria-describedby="idSubject" wire:model="subject" cols="30" rows="5" placeholder="{{ $isDidactics_nonFiction ? "Inserisci qui la materia del tuo libro" : "Descrivi brevemente il soggetto del libro" }}"></textarea>
+                        @error('subject')
+                            <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="idTopic" class="form-label">{{ $isDidactics_nonFiction ? "Argomento/descrizione *" : "Ambientazione *" }}</label>
+                        <textarea class="form-control @error('topic') is-invalid @enderror" id="idTopic" aria-describedby="idTopic" wire:model="topic" cols="30" rows="5" placeholder="{{ $isDidactics_nonFiction ? "Descrivi brevemente l'argomento del tuo libro" : "Descrivi brevemente l'ambientazione del tuo libro" }}"></textarea>
+                        @error('topic')
+                            <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     <div class="mb-3">
                         <label for="idOtherDetails" class="form-label">Altri dettagli</label>
-                        <textarea class="form-control @error('otherDetails') is-invalid @enderror" id="idOtherDetails" aria-describedby="" wire:model="otherDetails" cols="30" rows="5"></textarea>
+                        <textarea class="form-control @error('otherDetails') is-invalid @enderror" id="idOtherDetails" aria-describedby="idOtherDetails" wire:model="otherDetails" cols="30" rows="5" placeholder="Inserisci ulteriori dettagli"></textarea>
+                        @error('otherDetails')
+                            <div class="p-0 small fst-italic text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
+
                     <div class="mb-3">
                         <label for="idMainColor" class="form-label">Colore principale</label>
-                        <input type="text" class="form-control @error('idMainColor') is-invalid @enderror" id="idMainColor" aria-describedby="" wire:model="mainColor">
+                        <input type="text" class="form-control @error('idMainColor') is-invalid @enderror" id="idMainColor" aria-describedby="idMainColor" wire:model="mainColor" placeholder="Inserisci uno o più colori di base">
                     </div>
-                    {{-- <div class="d-flex justify-content-center">
-                        @if($cover)
-                            <img src="{{ Storage::url($cover) }}" alt="cover">
-                        @endif
-                    </div>
-                    <x-loader /> --}}
                     <div>
                         @if($isGeneratingImage)
-                            <x-loader />
+                        <x-loader /> 
                             <span wire:poll.visible="checkGeneratedImage"></span>
                         @endif
                         @if($cover)
@@ -141,6 +153,7 @@
                             </div>
                         </div>
                     </div>
+                   
                 </form>
             </div>
             {{-- Salvataggio --}}

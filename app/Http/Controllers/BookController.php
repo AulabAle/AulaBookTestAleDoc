@@ -76,7 +76,7 @@ class BookController extends Controller
     {
         $book->delete();
 
-        return redirect()->route('user.profile')->with('success','Libro cancellato con successo!');
+        return redirect()->route('user.profile')->with('message','Libro cancellato con successo!');
     }
 
     //funzione per la pubblicazione del libro

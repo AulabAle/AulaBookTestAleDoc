@@ -24,6 +24,6 @@ class ReviewController extends Controller
        
         Mail::to($userEmail)->queue(new ResponseReview($response , $book));
     
-        return redirect(route('revisor.index'))->with('success', 'La recensione è stata inviata');
+        return redirect(route('revisor.index'))->with('message', 'La recensione è stata inviata');
     }
 }

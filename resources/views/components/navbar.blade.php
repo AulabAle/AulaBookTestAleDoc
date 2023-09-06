@@ -82,6 +82,14 @@
           </ul>
         </li>
       </ul>
+      {{-- <form class="d-flex" method="GET" action="{{route("book.indexFilters")}}">
+        <input type="search" name="search" class="form-control me-2" placeholder="Ricerca per titolo o per autore..." aria-label="search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form> --}}
+      <form class="d-flex" method="GET" action="{{route('books.search')}}">
+        <input name="searched" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
     </div>
   </div>
 </nav>

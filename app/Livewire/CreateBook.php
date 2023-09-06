@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Book;
 use Livewire\Component;
+use App\Models\Category;
 use App\Mail\ReviewRequest;
 use Livewire\WithFileUploads;
 use App\Models\GeneratedImage;
@@ -16,12 +17,14 @@ class CreateBook extends Component
 {
     use WithFileUploads;
 
-    public $title, $description, $pdf, $promptToken, $cover, $book, $style, $subject, $ambience, $otherDetails, $mainColor, $selectedCategory, $editMode, $oldTitle, $oldPdf;
+    public $title, $description, $pdf, $promptToken, $cover, $book, $style, $subject, $ambience, $otherDetails, $mainColor, $selectedCategory, $editMode, $oldTitle, $oldPdf, $topic, $didacticsId, $nonFictionId;
     public $step = 1;
     public $price = 0;
     public $askReview=false;
     public $generatedImage;
     public $isGeneratingImage = false;
+    public $isDidactics_nonFiction = false;
+    public $isOtherCategory = false;
 
     protected $queryString = ['step'];
 
@@ -67,6 +70,34 @@ class CreateBook extends Component
             $this->price = $book->price;
             $this->oldPdf = $book->pdf;       
         }
+
+        $didactics = Category::where('name','Didattica')->first();
+        $nonFiction = Category::where('name','Saggistica')->first();
+
+        $this->didacticsId = $didactics->id;
+        $this->nonFictionId = $nonFiction->id;
+    }
+
+    public function generatePromptTokenForCategory($category){
+        $default=config('app.imagegen_default_prompt');
+
+        $finalPrompt = "$default , use style: $this->style";
+    
+        if ($category == $this->didacticsId || $category == $this->nonFictionId) {
+            $finalPrompt .= ", the book subject is: $this->subject , the book main topic is: $this->topic";
+        } else {
+            $finalPrompt .= ", the book main character is: $this->subject , the book main ambience is: $this->topic";
+        }
+    
+        if($this->otherDetails){
+            $finalPrompt .= ", other details here: $this->otherDetails";
+        }
+    
+        if($this->mainColor){
+            $finalPrompt .= ", use main color: $this->mainColor";
+        }
+    
+        return $finalPrompt;
     }
 
     public function saveBook()
@@ -106,37 +137,35 @@ class CreateBook extends Component
                 ]
             );
 
-            $message = "Libro inviato per la recesione correttamente";
+            $message = "Libro memorizzato correttamente";
         }
 
         //invio mail al revisore con job
         if($this->askReview){
             Mail::to('revisor@aulabook.com')->queue(new ReviewRequest($this->book));
-            return redirect()->route('welcome')->with('success','Libro inviato per la recesione correttamente');
+            return redirect()->route('welcome')->with('message','Libro inviato per la recesione correttamente');
         } 
-            
-        session()->flash('message',$message);
-        
-        // Reset dei campi del form
-        $this->reset();
+
+        return redirect()->route('welcome')->with('message',$message); 
     }
 
     public function generate(){
+
         $this->validate([
-            'ambience' => 'required|max:1000',
+            'topic' => 'required|max:1000',
             'style'=>'required|max:1000',
             'subject'=>'required',
         ]);
-        
-        $default=config('app.imagegen_default_prompt');
-        $this->promptToken = " $default , 
-                                use style: $this->style, 
-                                the book subject is: $this->subject , 
-                                the book main ambience is: $this->ambience , 
-                                other details here: $this->otherDetails, 
-                                the book main color is: $this->mainColor";
+
+        // $default=config('app.imagegen_default_prompt');
+        // $this->promptToken = " $default , 
+        //                         use style: $this->style, 
+        //                         the book subject is: $this->subject , 
+        //                         the book main ambience is: $this->ambience , 
+        //                         other details here: $this->otherDetails, 
+        //                         the book main color is: $this->mainColor";
         //$this->cover = Book::generateImage($this->cover, $this->promptToken);
-        //$this->promptToken = $this->generatePromptTokenForCategory($this->selectedCategory);
+        $this->promptToken = $this->generatePromptTokenForCategory($this->selectedCategory);
 
         if($this->generatedImage){
             Storage::disk('public')->delete($this->generatedImage->image);
@@ -213,6 +242,15 @@ class CreateBook extends Component
 
     public function render()
     {
+        // Categorie valide per la seconda versione del prompt
+        $didacticsAndNonFictionPrompt = [$this->didacticsId, $this->nonFictionId];
+
+        if (in_array($this->selectedCategory, $didacticsAndNonFictionPrompt)) {
+            $this->isDidactics_nonFiction = true;
+        }else{
+            $this->isDidactics_nonFiction = false;
+        }
+
         return view('livewire.create-book');
     }
 }

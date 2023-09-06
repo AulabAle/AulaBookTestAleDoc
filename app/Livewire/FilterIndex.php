@@ -9,7 +9,7 @@ class FilterIndex extends Component
 {
     public $minPrice;
     public $maxPrice;
-    public $search;
+    public $search="";
     public $categoryChecked = [];
     public $orderValue = 'createAsc';
 
