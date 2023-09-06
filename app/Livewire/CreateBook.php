@@ -166,6 +166,7 @@ class CreateBook extends Component
         //                         the book main color is: $this->mainColor";
         //$this->cover = Book::generateImage($this->cover, $this->promptToken);
         $this->promptToken = $this->generatePromptTokenForCategory($this->selectedCategory);
+        //dd($this->promptToken);
 
         if($this->generatedImage){
             Storage::disk('public')->delete($this->generatedImage->image);
@@ -185,7 +186,7 @@ class CreateBook extends Component
     public function checkGeneratedImage(){
         if($this->generatedImage->error){
             $this->isGeneratingImage = false;
-            session()->flash('errorMessage', $this->generatedImage->error);
+            session()->flash('error', $this->generatedImage->error);
             $this->generatedImage = null;
             return;
         }

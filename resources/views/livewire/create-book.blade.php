@@ -139,7 +139,7 @@
                     </div>
                     <div>
                         @if($isGeneratingImage)
-                        <x-loader /> 
+                            <x-loader /> 
                             <span wire:poll.visible="checkGeneratedImage"></span>
                         @endif
                         @if($cover)

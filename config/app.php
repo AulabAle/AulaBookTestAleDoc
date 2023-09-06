@@ -188,7 +188,7 @@ return [
 
     'imagegen_default_prompt' => env(
         'DEFAULT_PROMPT', 
-        'Generate an unwritten image representing a book, here are further details:'
+        'Generates an image without writing, here are further details:'
     ),
 
     'open_ai_key' => env('OPEN_AI_KEY'),
