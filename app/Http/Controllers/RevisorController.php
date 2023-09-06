@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Mail\BecomeRevisor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Artisan;
 
@@ -36,7 +37,12 @@ class RevisorController extends Controller
     }
     
     // accettazione della richiesta revisore
-    public function makeRevisor(User $user){
+    public function makeRevisor(User $user , $hashedId){
+        
+        if(!Hash::check($user->id, $hashedId)){
+            return redirect()->back()->with('message', 'Qualcosa è andato storto!');
+        }
+        
         Artisan::call('aulabook:makeUserRevisor', ['email'=>$user->email]);
         return redirect('/')->with('message', 'Complimenti, sei diventato Revisore!');
     }

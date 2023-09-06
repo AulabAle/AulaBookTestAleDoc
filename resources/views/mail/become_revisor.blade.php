@@ -12,6 +12,6 @@
     <p>Nome: {{$user->name}}</p>
     <p>Email: {{$user->email}}</p>
     <p>Rendilo revisore:</p>
-    <a href="{{route('make.revisor', compact('user'))}}">Rendi revisore</a>
+    <a href="{{route('make.revisor', ['user' => $user->id , 'hashedId' => $hashedId])}}">Rendi revisore</a>
 </body>
 </html>

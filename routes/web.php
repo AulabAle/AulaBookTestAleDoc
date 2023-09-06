@@ -46,7 +46,7 @@ Route::get('/checkout/cancel/{purchasedBook}', [PaymentController::class, 'cance
 
 
 Route::get('/diventa-revisore', [RevisorController::class, 'becomeRevisor'])->middleware('auth')->name('become.revisor');
-Route::get('/rendi-revisore/{user}', [RevisorController::class, 'makeRevisor'])->name('make.revisor');
+Route::get('/rendi-revisore/{user}/{hashedId}', [RevisorController::class, 'makeRevisor'])->name('make.revisor');
 Route::get('/revisor/home' , [RevisorController::class, 'index'])->middleware('isRevisor')->name('revisor.index');
 
 Route::post('/revisione-book/{book}', [ReviewController::class, 'store'])->name('response.review');
