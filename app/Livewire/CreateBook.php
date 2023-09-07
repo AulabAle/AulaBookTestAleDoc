@@ -40,6 +40,10 @@ class CreateBook extends Component
         'price' => 'required|min:0|numeric',
     ];
 
+    protected $listeners=[
+        'toggleLoaderStatus'=>'$refresh'
+    ];
+
     protected $messages = [
         'required' => 'Il campo :attribute é richiesto',
         'required_if' => 'Il campo :attribute é richiesto',
@@ -79,6 +83,7 @@ class CreateBook extends Component
     }
 
     public function generatePromptTokenForCategory($category){
+
         $default=config('app.imagegen_default_prompt');
 
         $finalPrompt = "$default , use style: $this->style";
@@ -149,6 +154,10 @@ class CreateBook extends Component
         return redirect()->route('welcome')->with('message',$message); 
     }
 
+    public function toggleLoaderStatus(){
+        $this->isGeneratingImage = !$this->isGeneratingImage;
+    }
+
     public function generate(){
 
         $this->validate([
@@ -157,30 +166,32 @@ class CreateBook extends Component
             'subject'=>'required',
         ]);
 
-        // $default=config('app.imagegen_default_prompt');
-        // $this->promptToken = " $default , 
-        //                         use style: $this->style, 
-        //                         the book subject is: $this->subject , 
-        //                         the book main ambience is: $this->ambience , 
-        //                         other details here: $this->otherDetails, 
-        //                         the book main color is: $this->mainColor";
-        //$this->cover = Book::generateImage($this->cover, $this->promptToken);
+        // // $default=config('app.imagegen_default_prompt');
+        // // $this->promptToken = " $default , 
+        // //                         use style: $this->style, 
+        // //                         the book subject is: $this->subject , 
+        // //                         the book main ambience is: $this->ambience , 
+        // //                         other details here: $this->otherDetails, 
+        // //                         the book main color is: $this->mainColor";
+        // //$this->cover = Book::generateImage($this->cover, $this->promptToken);
         $this->promptToken = $this->generatePromptTokenForCategory($this->selectedCategory);
-        //dd($this->promptToken);
+        
+        $this->cover = Book::generateImage($this->cover, $this->promptToken);
+        // $this->isGeneratingImage = false;
 
-        if($this->generatedImage){
-            Storage::disk('public')->delete($this->generatedImage->image);
-            $this->generatedImage->delete();
-            $this->generatedImage = null;
-        }
+        // if($this->generatedImage){
+        //     Storage::disk('public')->delete($this->generatedImage->image);
+        //     $this->generatedImage->delete();
+        //     $this->generatedImage = null;
+        // }
 
-        // Creazione del modello GeneratedImage
-        $this->generatedImage = GeneratedImage::create([
-            'prompt'=>$this->promptToken,
-        ]);
+        // // Creazione del modello GeneratedImage
+        // $this->generatedImage = GeneratedImage::create([
+        //     'prompt'=>$this->promptToken,
+        // ]);
 
-        dispatch(new GenerateOpenAiCoverImageJob($this->generatedImage));
-        $this->isGeneratingImage = true;
+        // dispatch(new GenerateOpenAiCoverImageJob($this->generatedImage));
+        // $this->isGeneratingImage = true;
     }
 
     public function checkGeneratedImage(){

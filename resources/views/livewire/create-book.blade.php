@@ -137,13 +137,21 @@
                         <label for="idMainColor" class="form-label">Colore principale</label>
                         <input type="text" class="form-control @error('idMainColor') is-invalid @enderror" id="idMainColor" aria-describedby="idMainColor" wire:model="mainColor" placeholder="Inserisci uno o più colori di base">
                     </div>
-                    <div>
+                    {{-- <div>
                         @if($isGeneratingImage)
                             <x-loader /> 
                             <span wire:poll.visible="checkGeneratedImage"></span>
                         @endif
                         @if($cover)
                             <img src="{{ Storage::url($cover) }}" alt="cover" class="img-fluid img-glass-card d-block mx-auto">
+                        @endif
+                    </div> --}}
+                    <div class="d-flex justify-content-center">
+                        <div wire:loading wire:target="generate">
+                            <x-loader/>
+                        </div>
+                        @if($cover)
+                            <img src="{{ Storage::url($cover) }}" alt="cover">                          
                         @endif
                     </div>
                     <div class="container">
