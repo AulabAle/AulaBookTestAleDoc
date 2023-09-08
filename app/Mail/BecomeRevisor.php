@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
@@ -17,7 +18,7 @@ class BecomeRevisor extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
-    public $hashedId;
+    public $cryptedId;
 
     /**
      * Create a new message instance.
@@ -25,7 +26,8 @@ class BecomeRevisor extends Mailable
     public function __construct(User $user)
     {
         $this->user = $user;
-        $this->hashedId = Hash::make($user->id);
+        //$this->hashedId = Hash::make($user->id);
+        $this->cryptedId = Crypt::encrypt($user->id);
     }
 
     /**

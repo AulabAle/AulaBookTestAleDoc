@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Artisan;
 
 class RevisorController extends Controller
@@ -37,9 +38,9 @@ class RevisorController extends Controller
     }
     
     // accettazione della richiesta revisore
-    public function makeRevisor(User $user , $hashedId){
+    public function makeRevisor(User $user , $cryptedId){
         
-        if(!Hash::check($user->id, $hashedId)){
+        if(Crypt::decrypt($cryptedId) != $user->id){
             return redirect()->back()->with('message', 'Qualcosa è andato storto!');
         }
         
